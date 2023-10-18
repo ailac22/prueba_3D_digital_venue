@@ -1,0 +1,62 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-lg-12 col-xl-8 mx-auto">
+      <div class="card border-0 shadow rounded-3 my-5">
+        <div class="card-body p-4 p-sm-5">
+          <div class="d-flex align-items-center justify-content-between mb-5">
+            <h5 class="card-title text-start fw-light fs-5">
+              Welcome back Mr. FullStack User!
+              <span class="badge bg-success ms-0"
+                >Expenses: [TOTAL_AMOUNT]</span
+              >
+            </h5>
+            <app-logout></app-logout>
+          </div>
+          <div class="mb-4">
+            <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
+              <div class="row justify-content-center align-items-center">
+                <div class="col">
+                  <input
+                    type="text"
+                    placeholder="Detail"
+                    id="detail"
+                    formControlName="detail"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-4">
+                  <input
+                    type="text"
+                    id="amount"
+                    placeholder="Amount"
+                    formControlName="amount"
+                    class="form-control"
+                  />
+                </div>
+                <div class="col-auto text-end">
+                  <button type="submit" class="btn btn-dark">Buy</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <table class="table">
+            <thead>
+              <tr class="table-dark">
+                <th class="text-start" scope="col">Transaction Detail</th>
+                <th class="text-center" scope="col">Created</th>
+                <th class="text-end" scope="col">Amount ($)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="table-light">
+                <td class="text-start">[TRANSACTION.DETAIL]</td>
+                <td class="text-center">[TRANSACTION.CREATED]</td>
+                <td class="text-end">[TRANSACTION.AMOUNT]</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
