@@ -23,6 +23,8 @@ export class UserController {
       // Default response
       const response: UsersIndexResponse = { data: null };
 
+      console.log("response: ", response)
+
       if (req.query.related && req.query.related === "transactions") {
         // Your code here
       }

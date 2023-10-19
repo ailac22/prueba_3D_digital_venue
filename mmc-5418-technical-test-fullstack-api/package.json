@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node ./src/server.ts",
+    "start": "npx ts-node ./src/server.ts",
     "build": "npx tsc",
-    "dev": "nodemon -L src/index.ts"
+    "dev": "npx nodemon -L src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +15,7 @@
     "argon2": "^0.30.3",
     "express": "^4.18.2",
     "express-http-context": "^1.2.4",
-    "mysql": "^2.18.1",
+    "mysql2": "^3.6.2",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",

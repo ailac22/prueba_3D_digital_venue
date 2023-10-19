@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import { routes } from "./routes";
 import { dataSource } from "./database/data-source";
+const passport = require('passport');
 
 const app = express();
 app.use(bodyParser.json());
@@ -28,6 +29,11 @@ app.use((req, res, next) => {
 });
 // routes definitions
 app.use(routes);
+
+
+app.get("/", (req, res, next) => {
+  res.send("holap")
+})
 
 // establish database connection
 dataSource
