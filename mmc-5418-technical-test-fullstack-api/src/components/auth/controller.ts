@@ -12,39 +12,41 @@ export class AuthController {
    * @param {Res} res
    */
   static login = async (req: Request, res: Response, next: NextFunction) => {
-    try {
 
-      const query = dataSource.createQueryBuilder().from(User, "user").where("username = :username", { username: req.body.username })
-        .getOne().then((user) => {
 
-          if (!user) {
-            return res.status(401).json({ success: false, msg: "could not find user" });
-          }
+    console.log("req.body.username: ", req.body.username);
+    const query = dataSource.createQueryBuilder().from(User, "user").where("username = :username", { username: req.body.username })
+      .getOne().then((user) => {
 
-          // Function defined at bottom of app.js
-          const isValid = UtilsController.validPassword(req.body.password, user.password);
+        console.log("user: ", user);
+        
+        if (!user) {
+          console.log("no user");
+          return res.status(401).json({ success: false, msg: "could not find user" });
+        }
 
-          if (isValid) {
+        // Function defined at bottom of app.js
+        const isValid = UtilsController.validPassword(req.body.password, user.password);
 
-            const tokenObject = UtilsController.issueJWT(user);
+        if (isValid) {
 
-            res.status(200).json({ success: true, token: tokenObject.token, expiresIn: tokenObject.expires });
+          const tokenObject = UtilsController.issueJWT(user);
 
-          } else {
+          console.log("Token: ", tokenObject);
+          
 
-            res.status(401).json({ success: false, msg: "you entered the wrong password" });
+          res.status(200).json({ success: true, token: tokenObject.token, expiresIn: tokenObject.expires });
 
-          }
+        } else {
 
-        })
-        .catch((err) => {
-          next(err);
-        });
-      // Your code here: Generate JWT
-      res.status(200).json();
-    } catch (error) {
-      console.log("catch");
-      res.status(400).json(error);
-    }
+          res.status(401).json({ success: false, msg: "Invalid credentials" });
+
+        }
+
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+        // next(err);
+      });
   };
 }

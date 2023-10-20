@@ -1,6 +1,5 @@
 @REQUESTS_ENV_HOST=http://localhost:3000
-
-GET localhost:3000
+@id=1
 
 ### Simple request
 
@@ -8,8 +7,19 @@ GET {{REQUESTS_ENV_HOST}}
 
 ### Login
 
-GET {{REQUESTS_ENV_HOST}}/login
+POST {{REQUESTS_ENV_HOST}}/login
+Content-Type: application/json
+
+{ 
+  "username": "johndoe", 
+  "password": "12345678" 
+}
 
 ### Password Reset
 
-GET {{REQUESTS_ENV_HOST}}/private/utils/user/{{ _.id }}/password/reset
+PATCH {{REQUESTS_ENV_HOST}}/private/utils/user/{{id}}/password/reset
+Content-Type: application/json
+
+{
+  "password": "12345678"
+}

@@ -5,8 +5,9 @@ import { dataSource } from "./database/data-source";
 const passport = require('passport');
 
 const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json())
 
 app.use((req, res, next) => {
   // Website you wish to allow to connect
