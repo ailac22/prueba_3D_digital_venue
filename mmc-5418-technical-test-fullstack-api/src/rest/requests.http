@@ -1,5 +1,6 @@
 @REQUESTS_ENV_HOST=http://localhost:3000
 @id=1
+@AUTH_TOKEN=eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTY5NzgzNzU4NTQwMCwiZXhwIjoxNjk3ODM3NTg3OTkyfQ.Qsi1-r08t0Gg6DEcvQjto8V4wjb1nZBlhL3FtOhBKQt6EeZV2Sz0VQQ3go_ui0ZarQnD3mwBlNmB1gReJ5HRsA
 
 ### Simple request
 
@@ -22,4 +23,15 @@ Content-Type: application/json
 
 {
   "password": "12345678"
+}
+
+### Insertar transacción
+
+POST {{REQUEST_ENV_HOST}}/user/transaction
+Content-Type: application/json 
+Authorization: Bearer {{AUTH_TOKEN}}
+
+{
+  "amount": 1234, 
+  "detail": "Seat 1, Row 3, Section 1"
 }

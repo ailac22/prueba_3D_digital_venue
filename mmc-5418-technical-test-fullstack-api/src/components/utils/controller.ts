@@ -25,13 +25,12 @@ export class UtilsController {
     next: NextFunction
   ) => {
 
-    //Aqui va el password reset
-    
     console.log("req.params.id ", req.params.id);
 
-    //TODO: RBAC
+    if (!req.body.password)
+      res.send(400)
 
-    log("req.body.password", req.body)
+    //TODO: RBAC
 
     let hash = await this.genPassword(req.body.password)
 
@@ -46,7 +45,7 @@ export class UtilsController {
   static issueJWT(user: User) {
     const id = user.id;
 
-    const expiresIn = environmentVars.JWT_EXPIRES_IN; //TODO: Poner JWT_EXPIRES_IN
+    const expiresIn = environmentVars.JWT_EXPIRES_IN;
 
     const payload = {
       sub: id,
@@ -54,6 +53,8 @@ export class UtilsController {
     };
 
     const signedToken = jsonwebtoken.sign(payload, PRIV_KEY, { expiresIn: expiresIn, algorithm: 'HS512' });
+
+    console.log("signed token")
 
     return {
       token: "Bearer " + signedToken,
