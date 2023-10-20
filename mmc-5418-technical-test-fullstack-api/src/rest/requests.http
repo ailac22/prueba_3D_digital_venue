@@ -1,0 +1,11 @@
+### Simple request
+
+GET {{REQUESTS_ENV_HOST}}
+
+### Login
+
+GET {{REQUESTS_ENV_HOST}}/login
+
+### Password Reset
+
+GET {{REQUESTS_ENV_HOST}}/private/utils/user/{{ _.id }}/password/reset

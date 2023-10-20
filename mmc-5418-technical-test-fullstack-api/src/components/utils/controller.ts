@@ -8,8 +8,8 @@ const path = require('path');
 
 console.log(__dirname);
 
-const pathToKey = path.join(__dirname, '../../config/jwt/id_rsa_priv.pem');
-const PRIV_KEY = fs.readFileSync(pathToKey, 'utf8');
+// const pathToKey = path.join(__dirname, '../../config/jwt/id_rsa_priv.pem');
+const PRIV_KEY = process.env.JWT_PASSPHRASE 
 
 export class UtilsController {
   /**
@@ -23,10 +23,12 @@ export class UtilsController {
     next: NextFunction
   ) => {
 
+    //Aqui va el password reset
+    
     console.log("req.params.id ", req.params.id);
 
+    //TODO: RBAC
 
-    //Aqui va el password reset
 
     let hash = await this.genPassword(req.body.password)
 
@@ -41,7 +43,7 @@ export class UtilsController {
   static issueJWT(user: User) {
     const id = user.id;
 
-    const expiresIn = '1d';
+    const expiresIn = process.env.JWT_EXPIRES_IN; //TODO: Poner JWT_EXPIRES_IN
 
     const payload = {
       sub: id,
