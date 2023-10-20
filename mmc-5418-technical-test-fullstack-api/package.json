@@ -6,13 +6,13 @@
   "scripts": {
     "start": "npx ts-node ./src/server.ts",
     "build": "npx tsc",
-    "dev": "npx nodemon -L src/index.ts"
+    "dev": "npx nodemon -LV src/index.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "argon2": "^0.30.3",
+    "argon2": "^0.26.2",
     "express": "^4.18.2",
     "express-http-context": "^1.2.4",
     "mysql2": "^3.6.2",

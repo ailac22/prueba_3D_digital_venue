@@ -3,6 +3,7 @@ import { AuthServices } from "./services";
 import environmentVars from "../../config/env";
 import { dataSource } from "../../database/data-source";
 import { User } from "../user/entity";
+import { UtilsController } from "../utils/controller";
 
 export class AuthController {
   /**
@@ -21,11 +22,11 @@ export class AuthController {
           }
 
           // Function defined at bottom of app.js
-          const isValid = utils.validPassword(req.body.password, user.hash, user.salt);
+          const isValid = UtilsController.validPassword(req.body.password, user.password);
 
           if (isValid) {
 
-            const tokenObject = utils.issueJWT(user);
+            const tokenObject = UtilsController.issueJWT(user);
 
             res.status(200).json({ success: true, token: tokenObject.token, expiresIn: tokenObject.expires });
 
