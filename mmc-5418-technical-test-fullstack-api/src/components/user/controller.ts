@@ -54,6 +54,27 @@ export class UserController {
       // Your code here
 
 
+
+      if (typeof req.body.amount !== 'number' || typeof req.body.detail !== 'string') {
+        return res.status(400).send("Entrada incorrecta")
+      }
+
+      let insertResult = await dataSource.createQueryBuilder().insert().into(Transaction).values({
+        amount: req.body.amount,
+        detail: req.body.detail,
+        user: req.user
+      }).execute()
+      // const query = dataSource.getRepository(User).createQueryBuilder("user").
+      // where("user.username = :username", { username: req.body.username }).getOne().then(async (user) => { })
+
+      if (insertResult.identifiers.length != 0){
+
+        dataSource.getRepository(User).createQueryBuilder("transaction").where("id = :id", { id: insertResult.identifiers[0].id })
+        
+      }
+
+      console.log("que hay en el result?", insertResult);
+      
       res.status(200).json();
     } catch (error) {
       next(error);

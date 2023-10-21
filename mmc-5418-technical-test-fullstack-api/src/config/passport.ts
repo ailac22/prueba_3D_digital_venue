@@ -12,7 +12,7 @@ import environmentVars from './env';
 
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey:  environmentVars.JWT_PASSPHRASE,
+  secretOrKey: environmentVars.JWT_PASSPHRASE,
   algorithms: ['HS256'],
   ignoreExpiration: false
 };
@@ -20,7 +20,6 @@ const jwtOptions = {
 function configurePassportStrategy(passport: PassportStatic){
   // The JWT payload is passed into the verify callback
   passport.use(new JwtStrategy(jwtOptions, function(jwt_payload, done) {
-
 
     // We will assign the `sub` property on the JWT to the database ID of user
     if (!jwt_payload.sub)
@@ -39,7 +38,6 @@ function configurePassportStrategy(passport: PassportStatic){
         }
 
     }).catch((err) => {
-      console.log("Inválido!")
       return done(err, false);
     })
 
