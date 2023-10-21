@@ -20,7 +20,6 @@ export class AuthController {
       return res.status(400).send("Entrada incorrecta")
     }
 
-
     console.log("req.body.username: ", req.body);
     const query = dataSource.getRepository(User).createQueryBuilder("user").where("user.username = :username", {username: req.body.username}).addSelect("user.password").getOne().then(async (user) => {
 

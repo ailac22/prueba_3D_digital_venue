@@ -3,6 +3,7 @@ import { dataSource } from "../../database/data-source";
 import { User } from "./entity";
 import { Transaction } from "../transaction/entity";
 import { UsersIndexResponse } from "./types";
+import { Transaction as TransactionEntity } from "./../transaction/entity"
 
 export class UserController {
   /**
@@ -51,31 +52,24 @@ export class UserController {
     next: NextFunction
   ) => {
     try {
-      // Your code here
-
-
 
       if (typeof req.body.amount !== 'number' || typeof req.body.detail !== 'string') {
         return res.status(400).send("Entrada incorrecta")
       }
 
-      let insertResult = await dataSource.createQueryBuilder().insert().into(Transaction).values({
-        amount: req.body.amount,
-        detail: req.body.detail,
-        user: req.user
-      }).execute()
-      // const query = dataSource.getRepository(User).createQueryBuilder("user").
-      // where("user.username = :username", { username: req.body.username }).getOne().then(async (user) => { })
+      const repo = dataSource.getRepository(TransactionEntity);
+      const newTransaction = new TransactionEntity()
 
-      if (insertResult.identifiers.length != 0){
+      newTransaction.amount = req.body.amount
+      newTransaction.detail = req.body.detail
+      newTransaction.user = req.user
 
-        dataSource.getRepository(User).createQueryBuilder("transaction").where("id = :id", { id: insertResult.identifiers[0].id })
-        
-      }
+      const savedEntity = await repo.save(newTransaction)
 
-      console.log("que hay en el result?", insertResult);
+      console.log("saved Entity vale: ", savedEntity);
       
-      res.status(200).json();
+      return res.send(savedEntity)
+
     } catch (error) {
       next(error);
     }
