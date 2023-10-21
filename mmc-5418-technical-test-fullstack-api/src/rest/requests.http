@@ -35,3 +35,11 @@ Authorization: Bearer {{AUTH_TOKEN}}
   "amount": 1234, 
   "detail": "Seat 1, Row 3, Section 1"
 }
+
+### Obtener transacciones de un usuario**
+
+GET {{REQUESTS_ENV_HOST}}/user?related=transactions
+Authorization: Bearer {{AUTH_TOKEN}}
+
+  
+

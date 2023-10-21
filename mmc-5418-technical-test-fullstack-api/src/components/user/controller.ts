@@ -53,9 +53,9 @@ export class UserController {
   ) => {
     try {
 
-      if (typeof req.body.amount !== 'number' || typeof req.body.detail !== 'string') {
+      if (typeof req.body.amount !== 'number' || typeof req.body.detail !== 'string')
         return res.status(400).send("Entrada incorrecta")
-      }
+      
 
       const repo = dataSource.getRepository(TransactionEntity);
       const newTransaction = new TransactionEntity()
@@ -65,13 +65,11 @@ export class UserController {
       newTransaction.user = req.user
 
       const savedEntity = await repo.save(newTransaction)
-
-      console.log("saved Entity vale: ", savedEntity);
       
       return res.send(savedEntity)
 
     } catch (error) {
-      next(error);
+      next(error); //TODO: A donde iria esto?
     }
   };
 
@@ -82,8 +80,18 @@ export class UserController {
    */
   static view = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // Your code here
-      res.status(200).json();
+
+      const user = await dataSource.getRepository(User).findOne({
+          where: {
+            id: req.user.id
+          },
+          relations: {
+              transactions: true,
+          },
+      })
+      
+      return res.send(user)
+
     } catch (error) {
       next(error);
     }

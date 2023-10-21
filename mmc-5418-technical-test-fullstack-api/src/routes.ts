@@ -15,7 +15,7 @@ routes.patch(
 routes.post("/login", AuthController.login);
 
 // User endpoints:
-routes.get("/user", UserController.view);
+routes.get("/user", passport.authenticate('jwt', { session: false }), UserController.view);
 routes.post("/user/transaction", passport.authenticate('jwt', { session: false }), UserController.transaction);
 
 // Admin endpoints.
