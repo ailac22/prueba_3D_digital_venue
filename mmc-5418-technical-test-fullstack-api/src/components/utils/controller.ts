@@ -54,7 +54,7 @@ export class UtilsController {
     console.log("date now: ", Date.now())
     const payload = {
       sub: id,
-      iat: Date.now()
+      iat: Math.floor(Date.now() / 1000),
     };
 
     const signedToken = jsonwebtoken.sign(payload, PRIV_KEY, { expiresIn });

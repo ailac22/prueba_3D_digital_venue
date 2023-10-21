@@ -50,7 +50,7 @@ export class AuthController {
 
     })
       .catch((err) => {
-        res.status(400).json(err);
+        res.status(400).send("Error al hacer login").end();
         // next(err);
       });
   };
