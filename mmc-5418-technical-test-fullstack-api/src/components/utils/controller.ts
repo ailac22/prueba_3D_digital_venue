@@ -25,6 +25,7 @@ export class UtilsController {
     next: NextFunction
   ) => {
 
+
     console.log("req.params.id ", req.params.id);
 
     if (!req.body.password)
@@ -32,8 +33,10 @@ export class UtilsController {
 
     //TODO: RBAC
 
+    console.log("req.body.password: ", req.body.password)
     let hash = await this.genPassword(req.body.password)
 
+    console.log("hash: ", hash)
     await dataSource.createQueryBuilder().update(User).set({ password: hash })
       .where("id = :id", { id: parseInt(req.params.id) }).execute()
 
@@ -47,14 +50,16 @@ export class UtilsController {
 
     const expiresIn = environmentVars.JWT_EXPIRES_IN;
 
+    console.log("expires in vale: ", expiresIn)
+    console.log("date now: ", Date.now())
     const payload = {
       sub: id,
       iat: Date.now()
     };
 
-    const signedToken = jsonwebtoken.sign(payload, PRIV_KEY, { expiresIn: expiresIn, algorithm: 'HS512' });
+    const signedToken = jsonwebtoken.sign(payload, PRIV_KEY, { expiresIn });
 
-    console.log("signed token")
+    console.log("signed token", signedToken)
 
     return {
       token: "Bearer " + signedToken,
@@ -65,7 +70,7 @@ export class UtilsController {
   static async genPassword(password: string) {
 
     try {
-      return argon2.hash(password, { raw: false });
+      return argon2.hash(password);
     } catch (err) {
       throw new Error("Error al hashear el password")
     }

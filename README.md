@@ -25,3 +25,4 @@ Nada más empezar problema al iniciar el docker-compose el proceso mysql llega a
 - Algunos cambios a la dockerfile, añadiendo `npx` delante de comandos
 - Debido a la subida a MySql 8 he tenido que cambiar el package [mysql](https://www.npmjs.com/package/mysql) al [mysql2](https://www.npmjs.com/package/mysql2) para que funcione la conexión
 - Downgrade en la versión de argon2 a la 0.26.2 porque habia un [crash](https://stackoverflow.com/questions/42482817/node-js-argon2-password-hash-crashes-app-after-reaching-100-of-cpu) en la versión que venia en el package.json y en la latest. En un entorno real hubiera cambiado de lib porque las libs de crypto no deben estar desactualizadas, pero aqui da igual.
+- Añadidas muchas declaraciones de tipos

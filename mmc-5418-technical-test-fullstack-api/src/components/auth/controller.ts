@@ -21,8 +21,8 @@ export class AuthController {
     }
 
 
-    console.log("req.body.username: ", req.body.username);
-    const query = dataSource.manager.findOneBy(User, { username: req.body.username }).then((user) => {
+    console.log("req.body.username: ", req.body);
+    const query = dataSource.getRepository(User).createQueryBuilder("user").where("user.username = :username", {username: req.body.username}).addSelect("user.password").getOne().then(async (user) => {
 
       console.log("user: ", user);
 
@@ -31,9 +31,11 @@ export class AuthController {
         return res.status(401).json({ success: false, msg: "could not find user" });
       }
 
+      console.log("user.password: ", user.password)
       // Function defined at bottom of app.js
-      const isValid = UtilsController.validPassword(req.body.password, user.password);
+      const isValid = await UtilsController.validPassword(req.body.password, user.password);
 
+      console.log("is valid password? ", isValid)
       if (isValid) {
 
         const tokenObject = UtilsController.issueJWT(user);

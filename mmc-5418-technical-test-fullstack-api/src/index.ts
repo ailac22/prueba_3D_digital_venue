@@ -2,12 +2,17 @@ import express from "express";
 import bodyParser from "body-parser";
 import { routes } from "./routes";
 import { dataSource } from "./database/data-source";
-const passport = require('passport');
+import passport from 'passport';
+import configurePassportStrategy from "./config/passport";
 
 const app = express();
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json())
+
+configurePassportStrategy(passport)
+
+app.use(passport.initialize());
 
 app.use((req, res, next) => {
   // Website you wish to allow to connect

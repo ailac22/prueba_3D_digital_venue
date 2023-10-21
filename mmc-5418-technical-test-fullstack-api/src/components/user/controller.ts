@@ -52,6 +52,8 @@ export class UserController {
   ) => {
     try {
       // Your code here
+
+
       res.status(200).json();
     } catch (error) {
       next(error);
