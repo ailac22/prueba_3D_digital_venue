@@ -41,5 +41,8 @@ Authorization: Bearer {{AUTH_TOKEN}}
 GET {{REQUESTS_ENV_HOST}}/user?related=transactions
 Authorization: Bearer {{AUTH_TOKEN}}
 
+### Obtener lista de socios y sus totales
   
+GET {{REQUESTS_ENV_HOST}}/private/users?related=transactions
+Authorization: Bearer {{AUTH_TOKEN}}
 

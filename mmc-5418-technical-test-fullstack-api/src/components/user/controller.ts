@@ -14,26 +14,21 @@ export class UserController {
    */
   static index = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // List all users
-      const query = dataSource.createQueryBuilder().from(User, "user");
-      query.select([
-        "user.id as id",
-        "user.username as username",
-        "user.created as created",
-      ]);
-      // Default response
-      const response: UsersIndexResponse = { data: null };
 
-      console.log("response")
-
-      if (req.query.related && req.query.related === "transactions") {
-        // Your code here
-      }
-      // Execute default query
-      response.data = await query.getRawMany();
+    const userRepository = dataSource.getRepository(User);
+    const userWithTotalAmount = await userRepository
+      .createQueryBuilder('user')
+      .select(['user.id as id','user.username as username'])
+      .addSelect('SUM(transaction.amount)', 'totalAmount')
+      .addSelect('COUNT(transaction.id)', 'totalTransactions')
+      .addSelect('MAX(transaction.created)', 'mostRecentTransactionDate')
+      .leftJoin('user.transactions', 'transaction')
+      .groupBy('user.id')
+      .getRawMany();
 
       // Response
-      res.status(200).json(response);
+      res.status(200).json(userWithTotalAmount);
+
     } catch (error) {
       console.log(error);
       next(error);
@@ -55,7 +50,6 @@ export class UserController {
 
       if (typeof req.body.amount !== 'number' || typeof req.body.detail !== 'string')
         return res.status(400).send("Entrada incorrecta")
-      
 
       const repo = dataSource.getRepository(TransactionEntity);
       const newTransaction = new TransactionEntity()
