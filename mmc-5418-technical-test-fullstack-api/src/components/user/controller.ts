@@ -15,19 +15,26 @@ export class UserController {
   static index = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-    const userRepository = dataSource.getRepository(User);
-    const userWithTotalAmount = await userRepository
-      .createQueryBuilder('user')
-      .select(['user.id as id','user.username as username'])
-      .addSelect('SUM(transaction.amount)', 'totalAmount')
-      .addSelect('COUNT(transaction.id)', 'totalTransactions')
-      .addSelect('MAX(transaction.created)', 'mostRecentTransactionDate')
-      .leftJoin('user.transactions', 'transaction')
-      .groupBy('user.id')
-      .getRawMany();
+      const queryRunner = dataSource.createQueryRunner()
 
-      // Response
-      res.status(200).json(userWithTotalAmount);
+      queryRunner.startTransaction()
+
+      const amount = await queryRunner.manager.createQueryBuilder()
+        .select("SUM(transaction.amount)", "amount").from(Transaction, "transaction").execute()
+
+      const data = await queryRunner.manager.createQueryBuilder()
+        .select(['user.id as id', 'user.username as username'])
+        .addSelect('SUM(transaction.amount)', 'totalAmount')
+        .addSelect('COUNT(transaction.id)', 'totalTransactions')
+        .addSelect('MAX(transaction.created)', 'mostRecentTransactionDate')
+        .from(User,"user")
+        .leftJoin('user.transactions', 'transaction')
+        .groupBy('user.id')
+        .addGroupBy('user.username')
+        .execute()
+
+      await queryRunner.commitTransaction()
+      res.status(200).json( {"totals": amount[0], data});
 
     } catch (error) {
       console.log(error);
@@ -61,7 +68,7 @@ export class UserController {
       //TODO: AQUI También hay que hacer el total
 
       const savedEntity = await repo.save(newTransaction)
-      
+
       return res.send(savedEntity)
 
     } catch (error) {
@@ -78,14 +85,14 @@ export class UserController {
     try {
 
       const user = await dataSource.getRepository(User).findOne({
-          where: {
-            id: req.user.id
-          },
-          relations: {
-              transactions: true,
-          },
+        where: {
+          id: req.user.id
+        },
+        relations: {
+          transactions: true,
+        },
       })
-      
+
       return res.send(user)
 
     } catch (error) {
