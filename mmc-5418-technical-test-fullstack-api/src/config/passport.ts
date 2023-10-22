@@ -25,8 +25,15 @@ function configurePassportStrategy(passport: PassportStatic){
     if (!jwt_payload.sub)
       return done(null, false)
 
-    const findOne = dataSource.getRepository(User).createQueryBuilder("user")
-      .where("user.id = :id", { id: jwt_payload.sub }).getOne().then((user: User) => {
+
+    dataSource.getRepository(User).findOne({
+      where: { id: jwt_payload.sub }, relations: { role: true, }
+    }).then(async (user) => {
+
+    // const findOne = dataSource.getRepository(User).createQueryBuilder("user")
+    //   .where("user.id = :id", { id: jwt_payload.sub }).getOne().then((user: User) => {
+
+        console.log("usuario: ", user)
 
         // This flow look familiar?  It is the same as when we implemented
         // the `passport-local` strategy

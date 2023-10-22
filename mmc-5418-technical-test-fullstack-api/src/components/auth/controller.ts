@@ -20,6 +20,7 @@ export class AuthController {
       return res.status(400).send("Entrada incorrecta")
     }
 
+dataSource.getRepository(User);
     console.log("req.body.username: ", req.body);
     const query = dataSource.getRepository(User).createQueryBuilder("user").where("user.username = :username", {username: req.body.username}).addSelect("user.password").getOne().then(async (user) => {
 
@@ -34,7 +35,7 @@ export class AuthController {
       // Function defined at bottom of app.js
       const isValid = await UtilsController.validPassword(req.body.password, user.password);
 
-      console.log("is valid password? ", isValid)
+      console.log("is valid password?", isValid)
       if (isValid) {
 
         const tokenObject = UtilsController.issueJWT(user);

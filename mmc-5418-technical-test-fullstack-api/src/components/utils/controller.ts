@@ -50,8 +50,6 @@ export class UtilsController {
 
     const expiresIn = environmentVars.JWT_EXPIRES_IN;
 
-    console.log("expires in vale: ", expiresIn)
-    console.log("date now: ", Date.now())
     const payload = {
       sub: id,
       iat: Math.floor(Date.now() / 1000),
@@ -77,7 +75,7 @@ export class UtilsController {
 
   }
 
-  static validPassword = (password, hash) => {
+  static validPassword = async (password, hash) => {
 
     // Este algoritmo parece no necesita salt como param.
     return argon2.verify(hash, password)

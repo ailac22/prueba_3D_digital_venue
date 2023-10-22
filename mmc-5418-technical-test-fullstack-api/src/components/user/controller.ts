@@ -58,6 +58,8 @@ export class UserController {
       newTransaction.detail = req.body.detail
       newTransaction.user = req.user
 
+      //TODO: AQUI También hay que hacer el total
+
       const savedEntity = await repo.save(newTransaction)
       
       return res.send(savedEntity)

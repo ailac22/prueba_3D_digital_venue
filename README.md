@@ -16,23 +16,19 @@ Hay llamadas de prueba en `/src/rest`, que se pueden ejecutar con REST Client (e
 
 ## Notas
 
-El .env esta pusheado **deliberadamente**
-
-### Notas sobre el readme.md inicial
-
-
+- El .env esta pusheado **deliberadamente**
+- En el enunciado hay ambiguedad alrededor de la palabra 'usuario' en cuanto a los roles. A pesar de esto, creo que he hecho la implementación intencionada.
 
 ### Problemas encontrados en el template
 
-Nada más empezar problema al iniciar el docker-compose el proceso mysql llega a 11 GB de memoria, llenando la memoria i el pc se bloqueaba. Sucesivos intentos hacian lo mismo, asi que se ha tenido que [Subir de MySql a latest (8.x)](https://stackoverflow.com/questions/52815608/er-not-supported-auth-mode-client-does-not-support-authentication-protocol-requ) y ha funcionado. Otros cambios hechos a la plantilla inicial
-
+- Nada más empezar problema al iniciar el docker-compose el proceso mysql llega a 11 GB de memoria, llenando la memoria i el pc se bloqueaba. Sucesivos intentos hacian lo mismo, asi que se ha tenido que [Subir de MySql a latest (8.x)](https://stackoverflow.com/questions/42482817/node-js-argon2-password-hash-crashes-app-after-reaching-100-of-cpu) y ha funcionado. 
 - Algunos cambios a la dockerfile, añadiendo `npx` delante de comandos
 - Debido a la subida a MySql 8 he tenido que cambiar el package [mysql](https://www.npmjs.com/package/mysql) al [mysql2](https://www.npmjs.com/package/mysql2) para que funcione la conexión
-- Downgrade en la versión de argon2 a la 0.26.2 porque habia un [crash](https://stackoverflow.com/questions/42482817/node-js-argon2-password-hash-crashes-app-after-reaching-100-of-cpu) en la versión que venia en el package.json y en la latest. En un entorno real hubiera cambiado de lib porque las libs de crypto no deben estar desactualizadas, pero aqui da igual.
+- Downgrade en la versión de argon2 a la 0.26.2 porque habia un [crash](https://stackoverflow.com/questions/52815608/er-not-supported-auth-mode-client-does-not-support-authentication-protocol-requ) en la versión que venia en el package.json y en la latest. En un entorno real hubiera cambiado de lib porque las libs de crypto no deben estar desactualizadas, pero aqui da igual.
 - Añadidas muchas declaraciones de tipos
+- No se esta usando strict: true en el tsconfig, pero eso no lo he cambiado porque aparecen demasiados errores en la plantilla
 
 ## algunas de las dificultades encontradas
 
-- Habia un bug en el proyecto referencia (https://github.com/zachgoll/express-jwt-authentication-starter.git) relacionado con el iat del JWT
-
+- Habia un bug en el proyecto referencia (https://github.com/zachgoll/express-jwt-authentication-starter.git) relacionado con el `iat` del JWT
 

@@ -1,7 +1,9 @@
 @REQUESTS_ENV_HOST=http://localhost:3000
-@id=1
-@AUTH_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTY5NzkxNTkwOCwiZXhwIjoxNzAwNTA3OTA4fQ.XZ1VHD4d-XWeAGTq_BQNCjP8Y-9tNE20YYHb9J-DmI0
 
+@ADMIN_AUTH_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTY5NzkxNTkwOCwiZXhwIjoxNzAwNTA3OTA4fQ.XZ1VHD4d-XWeAGTq_BQNCjP8Y-9tNE20YYHb9J-DmI0
+@CUSTOMER_AUTH_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImlhdCI6MTY5NzkzODYwNCwiZXhwIjoxNzAwNTMwNjA0fQ.U1b4t4FbnMPLOJU4DF0ZfnejnsPGhIkzATdPizFm9kM
+
+@id=2
 ### Simple request
 
 GET {{REQUESTS_ENV_HOST}}
@@ -12,14 +14,16 @@ POST {{REQUESTS_ENV_HOST}}/login
 Content-Type: application/json
 
 { 
-  "username": "johndoe", 
-  "password": "12345678" 
+  "username": "janedoe", 
+  "password": "12345678"
 }
 
 ### Password Reset
 
+
 PATCH {{REQUESTS_ENV_HOST}}/private/utils/user/{{id}}/password/reset
 Content-Type: application/json
+Authorization: Bearer {{ADMIN_AUTH_TOKEN}}
 
 {
   "password": "12345678"
@@ -29,7 +33,7 @@ Content-Type: application/json
 
 POST {{REQUESTS_ENV_HOST}}/user/transaction
 Content-Type: application/json 
-Authorization: Bearer {{AUTH_TOKEN}}
+Authorization: Bearer {{CUSTOMER_AUTH_TOKEN}}
 
 {
   "amount": 1234, 
@@ -39,10 +43,10 @@ Authorization: Bearer {{AUTH_TOKEN}}
 ### Obtener transacciones de un usuario**
 
 GET {{REQUESTS_ENV_HOST}}/user?related=transactions
-Authorization: Bearer {{AUTH_TOKEN}}
+Authorization: Bearer {{CUSTOMER_AUTH_TOKEN}}
 
-### Obtener lista de socios y sus totales
+### Obtener lista de socios y sus totales*
   
 GET {{REQUESTS_ENV_HOST}}/private/users?related=transactions
-Authorization: Bearer {{AUTH_TOKEN}}
+Authorization: Bearer {{ADMIN_AUTH_TOKEN}}
 
