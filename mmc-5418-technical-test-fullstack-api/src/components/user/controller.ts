@@ -63,7 +63,10 @@ export class UserController {
 
       newTransaction.amount = req.body.amount
       newTransaction.detail = req.body.detail
+      
       newTransaction.user = req.user
+
+      delete newTransaction.user.role
 
       //TODO: AQUI También hay que hacer el total
 
