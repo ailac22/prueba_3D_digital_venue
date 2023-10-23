@@ -6,9 +6,9 @@
           <div class="d-flex align-items-center justify-content-between mb-5">
             <h5 class="card-title text-start fw-light fs-5">
               Welcome back Mr. FullStack Admin!
-              <span class="badge bg-success ms-0"
-                >Expenses: [TOTAL TRANSACTIONS AMOUNT]</span
-              >
+              <span class="badge bg-success ms-0">
+                Expenses: {{usersInfo.totals.amount}}
+              </span>
             </h5>
             <app-logout></app-logout>
           </div>
@@ -23,12 +23,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="table-light">
-                <th scope="row">[USER ID]</th>
-                <td class="text-center">[USERNAME]</td>
-                <td class="text-center">[USER LAST TRANSACTION]</td>
-                <td class="text-center">[USER TOTAL N TRANSACTIONS]</td>
-                <td class="text-end">[USER TOTAL TRANSACTIONS AMOUNT]</td>
+              <tr *ngFor='let userInfo of usersInfo.data' class="table-light">
+                <th scope="row">{{userInfo.id}}</th>
+                <td class="text-center">{{userInfo.username}}</td>
+                <td class="text-center">{{userInfo.totalAmount || 0}}</td>
+                <td class="text-center">{{userInfo.totalTransactions || 0}}</td>
+                <td class="text-end">{{userInfo.mostRecentTransactionDate | date: 'dd/MM/yyyy'}}</td>
               </tr>
             </tbody>
           </table>

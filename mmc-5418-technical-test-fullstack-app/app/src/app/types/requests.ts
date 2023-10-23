@@ -1,4 +1,4 @@
-import { Transaction } from "./transaction"
+import { Transaction, TransactionSummary } from "./transaction"
 import { User } from "./user"
 
 export type PurchaseInfo = Partial<{
@@ -8,4 +8,9 @@ export type PurchaseInfo = Partial<{
 
 export interface PurchaseResponse extends Transaction {
   user: User
+}
+
+export type ListaSociosResponse = {
+  totals: { amount: number},
+  data: TransactionSummary[]
 }

@@ -14,7 +14,7 @@ POST {{REQUESTS_ENV_HOST}}/login
 Content-Type: application/json
 
 { 
-  "username": "janedoe", 
+  "username": "johndoe", 
   "password": "12345678"
 }
 
