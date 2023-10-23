@@ -13,33 +13,22 @@ export class AuthController {
    */
   static login = async (req: Request, res: Response, next: NextFunction) => {
 
-
-    console.log("en el login");
-
-
-
     if (typeof req.body.username !== 'string' || typeof req.body.password !== 'string')
       return res.status(400).send("Entrada incorrecta")
 
-
-    dataSource.getRepository(User);
     const query = dataSource.getRepository(User).createQueryBuilder("user").leftJoinAndSelect("user.role", "role").where("user.username = :username", { username: req.body.username })
       .addSelect("user.password").getOne().then(async (user) => {
 
-        console.log("user en el login", user);
-        
         if (!user) 
           return res.status(401).json({ success: false, msg: "could not find user" });
         
 
-        // Function defined at bottom of app.js
         const isValid = await UtilsController.validPassword(req.body.password, user.password);
 
         if (isValid) {
 
           const tokenObject = UtilsController.issueJWT(user);
 
-          //TODO: De momento devolvemos el mismo objeto user REVISAR
           delete user.password
 
           const isAdmin = user.role.type === 'admin' ? true : false

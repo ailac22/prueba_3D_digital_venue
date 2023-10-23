@@ -70,14 +70,13 @@ export class UserController {
 
       delete newTransaction.user.role
 
-      //TODO: AQUI También hay que hacer el total
 
       const savedEntity = await repo.save(newTransaction)
 
       return res.send(savedEntity)
 
     } catch (error) {
-      next(error); //TODO: A donde iria esto?
+      res.send(500).end()
     }
   };
 

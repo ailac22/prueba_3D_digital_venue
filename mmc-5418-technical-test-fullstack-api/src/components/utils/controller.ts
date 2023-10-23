@@ -33,7 +33,7 @@ export class UtilsController {
     await dataSource.createQueryBuilder().update(User).set({ password: hash })
       .where("id = :id", { id: parseInt(req.params.id) }).execute()
 
-    //TODO: Hacer respuesta bien
+    res.status(200).send("Password reseteado")
 
   };
 

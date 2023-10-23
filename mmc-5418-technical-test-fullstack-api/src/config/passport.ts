@@ -7,6 +7,7 @@ import { dataSource } from "../database/data-source";
 import { User } from '../components/user/entity';
 import { PassportStatic } from 'passport';
 import environmentVars from './env';
+import { authStrategy } from '../components/auth/middleware';
 // const pathToKey = path.join(__dirname, '..', 'id_rsa_pub.pem');
 // const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
 
@@ -18,30 +19,7 @@ const jwtOptions = {
 };
 
 function configurePassportStrategy(passport: PassportStatic){
-  passport.use(new JwtStrategy(jwtOptions, function(jwt_payload, done) {
-
-    if (!jwt_payload.sub)
-      return done(null, false)
-
-
-    dataSource.getRepository(User).findOne({
-      where: { id: jwt_payload.sub }, relations: { role: true, }
-    }).then(async (user) => {
-
-        if (user) {
-            return done(null, user);
-        } else {
-
-            return done(null, false);
-        }
-
-    }).catch((err) => {
-      return done(err, false);
-    })
-
-
-
-}));
+  passport.use(new JwtStrategy(jwtOptions, authStrategy ));
 }
 
 export default configurePassportStrategy

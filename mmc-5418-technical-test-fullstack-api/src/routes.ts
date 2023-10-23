@@ -3,7 +3,7 @@ import { UserController } from "./components/user/controller";
 import { UtilsController } from "./components/utils/controller";
 import { AuthController } from "./components/auth/controller";
 import passport from 'passport';
-import { isAdmin, isCustomer } from "./components/utils/middleware";
+import { isAdmin, isCustomer } from "./components/auth/middleware";
 export const routes = express.Router();
 
 // Generate new password
