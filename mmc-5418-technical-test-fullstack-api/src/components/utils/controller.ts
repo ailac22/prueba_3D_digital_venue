@@ -38,6 +38,9 @@ export class UtilsController {
   };
 
   static issueJWT(user: User) {
+
+    console.log("user en issue: ", user)
+
     const id = user.id;
 
     const expiresIn = environmentVars.JWT_EXPIRES_IN;

@@ -15,7 +15,7 @@ export class AuthController {
 
 
     console.log("en el login");
-    
+
 
 
     if (typeof req.body.username !== 'string' || typeof req.body.password !== 'string')
@@ -23,29 +23,36 @@ export class AuthController {
 
 
     dataSource.getRepository(User);
-    const query = dataSource.getRepository(User).createQueryBuilder("user").where("user.username = :username", { username: req.body.username }).addSelect("user.password").getOne().then(async (user) => {
+    const query = dataSource.getRepository(User).createQueryBuilder("user").leftJoinAndSelect("user.role", "role").where("user.username = :username", { username: req.body.username })
+      .addSelect("user.password").getOne().then(async (user) => {
 
-      if (!user) {
-        return res.status(401).json({ success: false, msg: "could not find user" });
-      }
+        console.log("user en el login", user);
+        
+        if (!user) 
+          return res.status(401).json({ success: false, msg: "could not find user" });
+        
 
-      // Function defined at bottom of app.js
-      const isValid = await UtilsController.validPassword(req.body.password, user.password);
+        // Function defined at bottom of app.js
+        const isValid = await UtilsController.validPassword(req.body.password, user.password);
 
-      if (isValid) {
+        if (isValid) {
 
-        const tokenObject = UtilsController.issueJWT(user);
+          const tokenObject = UtilsController.issueJWT(user);
 
-        //TODO: De momento devolvemos el mismo objeto user REVISAR
-        delete user.password
-        res.status(200).json({ success: true, token: tokenObject.token, user, expiresIn: tokenObject.expires });
+          //TODO: De momento devolvemos el mismo objeto user REVISAR
+          delete user.password
 
-      } else {
+          const isAdmin = user.role.type === 'admin' ? true : false
+          delete user.role
 
-        res.status(401).json({ success: false, msg: "Invalid credentials" });
-      }
+          res.status(200).json({ success: true, token: tokenObject.token, user, isAdmin, expiresIn: tokenObject.expires });
 
-    })
+        } else {
+
+          res.status(401).json({ success: false, msg: "Invalid credentials" });
+        }
+
+      })
       .catch((err) => {
         res.status(400).send("Error al hacer login").end();
       });

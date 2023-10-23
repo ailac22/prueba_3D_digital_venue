@@ -16,13 +16,25 @@ export class LoginComponent implements OnInit, OnDestroy {
   });
   public asyncError: boolean = false;
   constructor(
-    private loginService:LoginService ,
-    private fb: FormBuilder) {}
+    private router: Router,
+    private loginService: LoginService,
+    private fb: FormBuilder) { }
 
-  ngOnInit(): void {}
-  ngOnDestroy(): void {}
+  ngOnInit(): void {
+
+
+    console.log("ngOnInit")
+    if (this.loginService.isLoggedIn()) {
+      if (this.loginService.isAdmin())
+        this.router.navigate(['/admin']);
+      else
+        this.router.navigate(['/user']);
+    }
+  }
+
+  ngOnDestroy(): void { }
   public onSubmit() {
-    const loginInfo:LoginInfo = this.loginForm.value;
+    const loginInfo: LoginInfo = this.loginForm.value;
 
     // Submit post login to the API
     // Check asyncError on bad credentials

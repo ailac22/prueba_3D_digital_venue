@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { expiresAtIdent, tokenIdent } from 'src/app/types/constants';
-import { LoginInfo } from 'src/app/types/login';
+import { expiresAtIdent, isAdminIdent, tokenIdent } from 'src/app/types/constants';
+import { LoginInfo, LoginResponse } from 'src/app/types/login';
 @Injectable()
 export class LoginService {
   constructor(
@@ -16,42 +16,54 @@ export class LoginService {
     console.log("login llamado");
 
     const headers = new HttpHeaders({ 'Content-type': 'application/json' });
-    this.http.post('http://localhost:3000/login', loginInfo, { headers: headers })
+    this.http.post<LoginResponse>('http://localhost:3000/login', loginInfo, { headers: headers })
       .subscribe(
-       {
-         next: (response) => {
+        {
+          next: (response) => {
 
-           this.setLocalStorage(response);
-         },
+            this.setLocalStorage(response);
 
-        error: (error) => {
-          console.log(error);
-        },
+          },
 
-        complete: () => {
-          console.log('done!');
-          this.router.navigate(['protected']);
+          error: (error) => {
+            console.log(error);
+          },
+
+          complete: () => {
+
+            if (this.isAdmin())
+              this.router.navigate(['/admin']);
+            else
+              this.router.navigate(['/user']);
+          }
         }
-       }
-     );
+      );
   }
 
-  setLocalStorage(responseObj) {
+  setLocalStorage(responseObj: LoginResponse) {
 
-    const expiresAt = moment().add(Number.parseInt(responseObj.expiresIn), 'days');
+    const expiresAt = moment().add(responseObj.expiresIn, 'seconds');
 
     localStorage.setItem(tokenIdent, responseObj.token);
     localStorage.setItem(expiresAtIdent, JSON.stringify(expiresAt.valueOf()));
+
+    localStorage.setItem(isAdminIdent, responseObj.isAdmin.toString());
+
   }
 
   logout() {
     localStorage.removeItem(tokenIdent);
     localStorage.removeItem(expiresAtIdent);
+    localStorage.removeItem(isAdminIdent);
   }
 
   public isLoggedIn() {
 
     return moment().isBefore(this.getExpiration(), "second");
+  }
+
+  isAdmin() {
+    return localStorage.getItem(isAdminIdent) === 'true'
   }
 
   isLoggedOut() {

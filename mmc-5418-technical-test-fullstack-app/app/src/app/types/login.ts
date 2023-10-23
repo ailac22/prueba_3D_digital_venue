@@ -1,4 +1,17 @@
+export type User = {
+    id: number,
+    username: "janedoe",
+    created: string
+    updated: string
+}
 
+export type LoginResponse = {
+  success: boolean,
+  token: string,
+  user: User,
+  isAdmin: boolean,
+  expiresIn: number
+}
 
 export type LoginInfo = Partial<{
   username: string,

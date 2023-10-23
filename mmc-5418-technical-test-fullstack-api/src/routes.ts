@@ -11,7 +11,6 @@ export const routes = express.Router();
 
 // Login
 routes.post("/login", AuthController.login);
-routes.options("/login",(req,res,next) => {return res.send(200).end()})
 
 // User endpoints:
 

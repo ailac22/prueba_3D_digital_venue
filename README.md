@@ -9,7 +9,6 @@ Prueba realizada con una serie de tecnologias base que venian con el template in
 - [Passport.js](https://www.passportjs.org/)
 - [TypeORM](https://typeorm.io/)
 
-
 ## API
 
 Hay llamadas de prueba en `/src/rest`, que se pueden ejecutar con REST Client (extension ID `humao.rest-client`) de VSCode o con [rest.nvim](https://github.com/rest-nvim/rest.nvim) por ejemplo.
@@ -28,7 +27,7 @@ Hay llamadas de prueba en `/src/rest`, que se pueden ejecutar con REST Client (e
 - Downgrade en la versión de argon2 a la 0.26.2 porque habia un [crash](https://stackoverflow.com/questions/52815608/er-not-supported-auth-mode-client-does-not-support-authentication-protocol-requ) en la versión que venia en el package.json y en la latest. En un entorno real hubiera cambiado de lib porque las libs de crypto no deben estar desactualizadas, pero aqui da igual.
 - Añadidas muchas declaraciones de tipos
 - No se esta usando strict: true en el tsconfig, pero eso no lo he cambiado porque aparecen demasiados errores en la plantilla
-- Faltava el handling del preflight de CORS
+- Faltaba el handling del preflight de CORS para OPTIONS
 
 ## algunas de las dificultades encontradas
 
