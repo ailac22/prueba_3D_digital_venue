@@ -20,19 +20,23 @@ export class UserComponent implements OnInit, OnDestroy {
   });
   constructor(
     private userService: UserService,
-    private fb: FormBuilder) {}
+    private fb: FormBuilder) { }
 
   ngOnInit(): void {
 
-    this.userService.getPurchases().subscribe(() => {
-
-
-    })
+    this.userService.getPurchases().subscribe((user) => this.setTransactions(user.transactions))
   }
-  ngOnDestroy(): void {}
+
+  ngOnDestroy(): void { }
+
+
+  public setTransactions(transactions: Transaction[]) {
+
+    this.transactions = transactions;
+    this.totalAmount = this.transactions.reduce((total, transaction) => total + transaction.amount, 0);
+  }
 
   public onSubmit() {
-    console.log(this.transactionForm.value);
 
     const purchaseInfo: PurchaseInfo = {
       //Se que en caso de que no sea un int no esta muy bien controlado...
@@ -40,8 +44,9 @@ export class UserComponent implements OnInit, OnDestroy {
       detail: this.transactionForm.value.detail
     }
 
-    console.log("pur info", purchaseInfo)
-
-
+    this.userService.buy(purchaseInfo).subscribe((response) => {
+      delete response.user
+      this.setTransactions([...this.transactions, response])
+    })
   }
 }

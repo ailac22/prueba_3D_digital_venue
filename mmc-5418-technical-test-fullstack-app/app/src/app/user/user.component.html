@@ -7,7 +7,7 @@
             <h5 class="card-title text-start fw-light fs-5">
               Welcome back Mr. FullStack User!
               <span class="badge bg-success ms-0"
-                >Expenses: [TOTAL_AMOUNT]</span
+              >Expenses: {{totalAmount}}</span
               >
             </h5>
             <app-logout></app-logout>
@@ -48,10 +48,10 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="table-light">
-                <td class="text-start">[TRANSACTION.DETAIL]</td>
-                <td class="text-center">[TRANSACTION.CREATED]</td>
-                <td class="text-end">[TRANSACTION.AMOUNT]</td>
+              <tr *ngFor="let transaction of transactions" class="table-light">
+                <td class="text-start">{{ transaction.detail }}</td>
+                <td class="text-center">{{ transaction.created | date: 'dd/MM/yyyy'}}</td>
+                <td class="text-end">{{ transaction.amount }}</td>
               </tr>
             </tbody>
           </table>
