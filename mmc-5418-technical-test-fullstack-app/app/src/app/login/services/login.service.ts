@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { expiresAtIdent, isAdminIdent, tokenIdent } from 'src/app/types/constants';
 import { LoginInfo, LoginResponse } from 'src/app/types/login';
+import { environment } from 'src/environments/environment';
 @Injectable()
 export class LoginService {
   constructor(
@@ -16,7 +17,7 @@ export class LoginService {
     console.log("login llamado");
 
     const headers = new HttpHeaders({ 'Content-type': 'application/json' });
-    this.http.post<LoginResponse>('http://localhost:3000/login', loginInfo, { headers: headers })
+    this.http.post<LoginResponse>(`${environment.api.url}/login` , loginInfo, { headers: headers })
       .subscribe(
         {
           next: (response) => {

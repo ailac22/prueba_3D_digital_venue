@@ -1,9 +1,4 @@
-export type User = {
-    id: number,
-    username: "janedoe",
-    created: string
-    updated: string
-}
+import { User } from "./user"
 
 export type LoginResponse = {
   success: boolean,
@@ -17,3 +12,4 @@ export type LoginInfo = Partial<{
   username: string,
   password: string
 }>
+
