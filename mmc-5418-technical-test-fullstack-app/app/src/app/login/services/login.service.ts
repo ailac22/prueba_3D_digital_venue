@@ -1,6 +1,70 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import * as moment from 'moment';
+import { LoginInfo } from 'src/app/types/login';
 @Injectable()
 export class LoginService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) { }
+
+  login(loginInfo: LoginInfo) {
+
+    console.log("login llamado");
+
+    const headers = new HttpHeaders({ 'Content-type': 'application/json' });
+    this.http.post('http://localhost:3000/login', loginInfo, { headers: headers })
+      .subscribe(
+       {
+         next: (response) => {
+
+           this.setLocalStorage(response);
+         },
+
+        error: (error) => {
+          console.log(error);
+        },
+
+        complete: () => {
+          console.log('done!');
+          this.router.navigate(['protected']);
+        }
+       }
+     );
+  }
+
+  setLocalStorage(responseObj) {
+
+    console.log("ha habido respuesta! ", responseObj)
+    const expiresAt = moment().add(Number.parseInt(responseObj.expiresIn), 'days');
+
+    localStorage.setItem('id_token', responseObj.token);
+    localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()));
+  }
+
+  logout() {
+    localStorage.removeItem("id_token");
+    localStorage.removeItem("expires_at");
+  }
+
+  public isLoggedIn() {
+
+    return moment().isBefore(this.getExpiration(), "second");
+  }
+
+  isLoggedOut() {
+    return !this.isLoggedIn();
+  }
+
+  getExpiration() {
+    const expiration = localStorage.getItem("expires_at");
+    if (expiration) {
+      const expiresAt = JSON.parse(expiration);
+      return moment(expiresAt);
+    } else {
+      return moment();
+    }
+  }
 }

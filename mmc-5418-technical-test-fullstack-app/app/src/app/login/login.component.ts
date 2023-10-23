@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl } from '@angular/forms';
+import { LoginService } from './services/login.service';
+import { LoginInfo } from '../types/login';
 
 @Component({
   selector: 'app-login',
@@ -13,20 +15,25 @@ export class LoginComponent implements OnInit, OnDestroy {
     password: new FormControl(''),
   });
   public asyncError: boolean = false;
-  constructor(private router: Router, private fb: FormBuilder) {}
+  constructor(
+    private loginService:LoginService ,
+    private fb: FormBuilder) {}
 
   ngOnInit(): void {}
   ngOnDestroy(): void {}
   public onSubmit() {
-    console.log(this.loginForm.value);
+    const loginInfo:LoginInfo = this.loginForm.value;
+
     // Submit post login to the API
     // Check asyncError on bad credentials
     // Redirect to the admin or user vew depending on role type
-    let isadmin = false;
-    if (isadmin) {
-      this.router.navigate(['/admin']);
-    } else {
-      this.router.navigate(['/user']);
-    }
+    this.loginService.login(loginInfo)
+
+    // let isadmin = false;
+    // if (isadmin) {
+    //   this.router.navigate(['/admin']);
+    // } else {
+    //   this.router.navigate(['/user']);
+    // }
   }
 }

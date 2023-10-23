@@ -19,6 +19,7 @@ Hay llamadas de prueba en `/src/rest`, que se pueden ejecutar con REST Client (e
 - El .env esta pusheado **deliberadamente**
 - En el enunciado hay ambiguedad alrededor de la palabra 'usuario' en cuanto a los roles. A pesar de esto, creo que he hecho la implementación intencionada.
 
+
 ### Problemas encontrados en el template
 
 - Nada más empezar problema al iniciar el docker-compose el proceso mysql llega a 11 GB de memoria, llenando la memoria i el pc se bloqueaba. Sucesivos intentos hacian lo mismo, asi que se ha tenido que [Subir de MySql a latest (8.x)](https://stackoverflow.com/questions/42482817/node-js-argon2-password-hash-crashes-app-after-reaching-100-of-cpu) y ha funcionado. 
@@ -27,8 +28,9 @@ Hay llamadas de prueba en `/src/rest`, que se pueden ejecutar con REST Client (e
 - Downgrade en la versión de argon2 a la 0.26.2 porque habia un [crash](https://stackoverflow.com/questions/52815608/er-not-supported-auth-mode-client-does-not-support-authentication-protocol-requ) en la versión que venia en el package.json y en la latest. En un entorno real hubiera cambiado de lib porque las libs de crypto no deben estar desactualizadas, pero aqui da igual.
 - Añadidas muchas declaraciones de tipos
 - No se esta usando strict: true en el tsconfig, pero eso no lo he cambiado porque aparecen demasiados errores en la plantilla
+- Añadido paquete de CORS para probarlo en localhost con puertos diferentes
 
 ## algunas de las dificultades encontradas
 
-- Habia un bug en el proyecto referencia (https://github.com/zachgoll/express-jwt-authentication-starter.git) relacionado con el `iat` del JWT
+- Habia un bug en el [proyecto referencia](https://github.com/zachgoll/express-jwt-authentication-starter.git) relacionado con el `iat` del JWT que impedia la correcta expiración del token
 

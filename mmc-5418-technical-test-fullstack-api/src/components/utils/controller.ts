@@ -25,22 +25,14 @@ export class UtilsController {
     next: NextFunction
   ) => {
 
-
-    console.log("req.params.id ", req.params.id);
-
     if (!req.body.password)
       res.send(400)
 
-    //TODO: RBAC
-
-    console.log("req.body.password: ", req.body.password)
     let hash = await this.genPassword(req.body.password)
 
-    console.log("hash: ", hash)
     await dataSource.createQueryBuilder().update(User).set({ password: hash })
       .where("id = :id", { id: parseInt(req.params.id) }).execute()
 
-    res.send("ok")
     //TODO: Hacer respuesta bien
 
   };
@@ -56,8 +48,6 @@ export class UtilsController {
     };
 
     const signedToken = jsonwebtoken.sign(payload, PRIV_KEY, { expiresIn });
-
-    console.log("signed token", signedToken)
 
     return {
       token: "Bearer " + signedToken,

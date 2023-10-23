@@ -38,7 +38,7 @@ app.use(routes);
 
 
 app.get("/", (req, res, next) => {
-  res.send("holap")
+  res.send("La api funciona!")
 })
 
 // establish database connection

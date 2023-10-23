@@ -14,28 +14,23 @@ export class AuthController {
   static login = async (req: Request, res: Response, next: NextFunction) => {
 
 
+
+
     //TODO: Usar express-validation?
-    console.log("typeof " , typeof req.body.username)
-    if(typeof req.body.username !== 'string' || typeof req.body.password !== 'string') {
+    if (typeof req.body.username !== 'string' || typeof req.body.password !== 'string')
       return res.status(400).send("Entrada incorrecta")
-    }
 
-dataSource.getRepository(User);
-    console.log("req.body.username: ", req.body);
-    const query = dataSource.getRepository(User).createQueryBuilder("user").where("user.username = :username", {username: req.body.username}).addSelect("user.password").getOne().then(async (user) => {
 
-      console.log("user: ", user);
+    dataSource.getRepository(User);
+    const query = dataSource.getRepository(User).createQueryBuilder("user").where("user.username = :username", { username: req.body.username }).addSelect("user.password").getOne().then(async (user) => {
 
       if (!user) {
-        console.log("no user");
         return res.status(401).json({ success: false, msg: "could not find user" });
       }
 
-      console.log("user.password: ", user.password)
       // Function defined at bottom of app.js
       const isValid = await UtilsController.validPassword(req.body.password, user.password);
 
-      console.log("is valid password?", isValid)
       if (isValid) {
 
         const tokenObject = UtilsController.issueJWT(user);
@@ -51,7 +46,6 @@ dataSource.getRepository(User);
     })
       .catch((err) => {
         res.status(400).send("Error al hacer login").end();
-        // next(err);
       });
   };
 }

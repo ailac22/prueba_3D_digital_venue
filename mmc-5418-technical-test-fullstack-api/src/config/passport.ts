@@ -18,10 +18,8 @@ const jwtOptions = {
 };
 
 function configurePassportStrategy(passport: PassportStatic){
-  // The JWT payload is passed into the verify callback
   passport.use(new JwtStrategy(jwtOptions, function(jwt_payload, done) {
 
-    // We will assign the `sub` property on the JWT to the database ID of user
     if (!jwt_payload.sub)
       return done(null, false)
 
@@ -30,13 +28,6 @@ function configurePassportStrategy(passport: PassportStatic){
       where: { id: jwt_payload.sub }, relations: { role: true, }
     }).then(async (user) => {
 
-    // const findOne = dataSource.getRepository(User).createQueryBuilder("user")
-    //   .where("user.id = :id", { id: jwt_payload.sub }).getOne().then((user: User) => {
-
-        console.log("usuario: ", user)
-
-        // This flow look familiar?  It is the same as when we implemented
-        // the `passport-local` strategy
         if (user) {
             return done(null, user);
         } else {

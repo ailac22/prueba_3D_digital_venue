@@ -24,6 +24,6 @@ routes.get("/private/users" , isAdmin, UserController.index);
 
 routes.patch(
   "/private/utils/user/:id/password/reset",
-  // isAdmin,
+  isAdmin,
   UtilsController.passwordUpdate
 );

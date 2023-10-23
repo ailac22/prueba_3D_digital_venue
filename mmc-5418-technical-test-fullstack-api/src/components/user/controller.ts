@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { dataSource } from "../../database/data-source";
 import { User } from "./entity";
 import { Transaction } from "../transaction/entity";
-import { UsersIndexResponse } from "./types";
+import { UserCounts, UsersIndexResponse, UsersTotal } from "./types";
 import { Transaction as TransactionEntity } from "./../transaction/entity"
 
 export class UserController {
@@ -19,10 +19,10 @@ export class UserController {
 
       queryRunner.startTransaction()
 
-      const amount = await queryRunner.manager.createQueryBuilder()
+      const amount: UsersTotal = await queryRunner.manager.createQueryBuilder()
         .select("SUM(transaction.amount)", "amount").from(Transaction, "transaction").execute()
 
-      const data = await queryRunner.manager.createQueryBuilder()
+      const data: UserCounts[] = await queryRunner.manager.createQueryBuilder()
         .select(['user.id as id', 'user.username as username'])
         .addSelect('SUM(transaction.amount)', 'totalAmount')
         .addSelect('COUNT(transaction.id)', 'totalTransactions')
@@ -34,7 +34,9 @@ export class UserController {
         .execute()
 
       await queryRunner.commitTransaction()
-      res.status(200).json( {"totals": amount[0], data});
+
+      const result: UsersIndexResponse = {totals: amount[0], data}
+      res.status(200).json(result);
 
     } catch (error) {
       console.log(error);
