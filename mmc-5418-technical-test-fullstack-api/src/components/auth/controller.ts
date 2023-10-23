@@ -14,9 +14,10 @@ export class AuthController {
   static login = async (req: Request, res: Response, next: NextFunction) => {
 
 
+    console.log("en el login");
+    
 
 
-    //TODO: Usar express-validation?
     if (typeof req.body.username !== 'string' || typeof req.body.password !== 'string')
       return res.status(400).send("Entrada incorrecta")
 
@@ -35,7 +36,8 @@ export class AuthController {
 
         const tokenObject = UtilsController.issueJWT(user);
 
-        //TODO: De momento devolvemos el mismo objeto user
+        //TODO: De momento devolvemos el mismo objeto user REVISAR
+        delete user.password
         res.status(200).json({ success: true, token: tokenObject.token, user, expiresIn: tokenObject.expires });
 
       } else {

@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { expiresAtIdent, tokenIdent } from 'src/app/types/constants';
 import { LoginInfo } from 'src/app/types/login';
 @Injectable()
 export class LoginService {
@@ -37,16 +38,15 @@ export class LoginService {
 
   setLocalStorage(responseObj) {
 
-    console.log("ha habido respuesta! ", responseObj)
     const expiresAt = moment().add(Number.parseInt(responseObj.expiresIn), 'days');
 
-    localStorage.setItem('id_token', responseObj.token);
-    localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()));
+    localStorage.setItem(tokenIdent, responseObj.token);
+    localStorage.setItem(expiresAtIdent, JSON.stringify(expiresAt.valueOf()));
   }
 
   logout() {
-    localStorage.removeItem("id_token");
-    localStorage.removeItem("expires_at");
+    localStorage.removeItem(tokenIdent);
+    localStorage.removeItem(expiresAtIdent);
   }
 
   public isLoggedIn() {
@@ -59,7 +59,7 @@ export class LoginService {
   }
 
   getExpiration() {
-    const expiration = localStorage.getItem("expires_at");
+    const expiration = localStorage.getItem(expiresAtIdent);
     if (expiration) {
       const expiresAt = JSON.parse(expiration);
       return moment(expiresAt);
