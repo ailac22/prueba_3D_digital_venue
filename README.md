@@ -1,13 +1,17 @@
 
 # Prueba técnica para 3D Digital Venue
 
-Prueba realizada con una serie de tecnologias base que venian con el template inicial:
+La prueba consiste en realizar tanto el frontend como el backend de un login usando jwt con dos tipos de usuarios: administradores y socios. A pesar de ser una prueba de fullstack, tiene más peso el back. Está realizada con una serie de tecnologias base que venian con el template inicial:
 
 - [Node.js](https://nodejs.org/es)
 - [Express.js](https://expressjs.com/)
 - [Angular](https://angular.io/)
 - [Passport.js](https://www.passportjs.org/)
 - [TypeORM](https://typeorm.io/)
+
+Para su realización he tomado como punto inicial este [video de freeCodeCamp](https://www.youtube.com/watch?v=F-sFp_AvHc8) y su correspondiente [código](https://github.com/zachgoll/express-jwt-authentication-starter.git) que ya vi hace unos años, que explica como realizar un login con passport.js y conectarlo a un front angular. Además, se ha implementado un RBAC sencillo y algunos endpoints que se requerian.
+
+He adjuntado también el (enunciado)[./enunciado.md]. El proyecto se divide en dos partes y cada uno tiene su propio "sub-enunciado": el de (front)[./mmc-5418-technical-test-fullstack-app/README.md] y el de (back)[./mmc-5418-technical-test-fullstack-api/README.md]
 
 ## API
 
@@ -17,7 +21,7 @@ Hay llamadas de prueba en `/src/rest`, que se pueden ejecutar con REST Client (e
 
 - El .env esta pusheado **deliberadamente**
 - En el enunciado hay ambiguedad alrededor de la palabra 'usuario' en cuanto a los roles. A pesar de esto, creo que he hecho la implementación intencionada.
-
+- Sé que moment.js esta deprecada, pero dado que el proyecto de referencia ya la usaba, he puesto esa
 
 ### Problemas encontrados en el template
 
