@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ListaSociosResponse } from '../types/requests';
 import { TransactionSummary } from '../types/transaction';
 import { AdminService } from './services/admin.service';
@@ -9,16 +10,14 @@ import { AdminService } from './services/admin.service';
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
-  constructor(private adminService: AdminService) {}
 
   usersInfo: ListaSociosResponse;
 
-  ngOnInit(): void {
+  constructor(private adminService: AdminService, private route: ActivatedRoute) {
 
-    this.adminService.getUserList().subscribe((usersInfo) => {
+    this.usersInfo = this.route.snapshot.data['userInfo']
 
-
-      this.usersInfo = usersInfo
-    })
   }
+
+  ngOnInit(): void {}
 }

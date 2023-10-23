@@ -21,9 +21,7 @@ export class LoginService {
       .subscribe(
         {
           next: (response) => {
-
             this.setLocalStorage(response);
-
           },
 
           error: (error) => {

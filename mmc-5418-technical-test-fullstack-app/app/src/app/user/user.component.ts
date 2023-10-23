@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { PurchaseInfo } from '../types/requests';
 import { Transaction } from '../types/transaction';
 import { UserService } from './services/user.service';
@@ -20,12 +21,13 @@ export class UserComponent implements OnInit, OnDestroy {
   });
   constructor(
     private userService: UserService,
-    private fb: FormBuilder) { }
-
-  ngOnInit(): void {
-
-    this.userService.getPurchases().subscribe((user) => this.setTransactions(user.transactions))
+    private fb: FormBuilder,
+    private route: ActivatedRoute
+  ) {
+    this.setTransactions(this.route.snapshot.data['userInfo'].transactions)
   }
+
+  ngOnInit(): void {}
 
   ngOnDestroy(): void { }
 
